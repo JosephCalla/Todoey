@@ -10,7 +10,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 
-    let itemArray = ["Find mike","Buy Eggos", "Destroy Demongorgon"]
+    var itemArray = ["Find mike","Buy Eggos", "Destroy Demongorgon"]
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,7 +46,7 @@ class TodoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        print(itemArray[indexPath.row])
-       
+       //validamos si esta seleccionada la fila para su respectivo accesorio por medio del indexPath
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark{
             
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
@@ -60,6 +60,27 @@ class TodoListViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)//efecto reflejo
     }
 
+    //Mark - Add new Items
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add new Todoey item", message: "", preferredStyle: .alert)
+        
+        let  action = UIAlertAction(title: "Add new item", style: .default) { (action) in
+            //Aqui capturará la accion cuando presione el "Add new item" en nuestro UIALERT
+            self.itemArray.append(textField.text!)
+            self.tableView.reloadData()
+        }
+        
+        alert.addTextField { (alertTextField ) in
+            alertTextField.placeholder = "Create new Item"
+            textField = alertTextField
+        
+        }
+        alert.addAction(action)
+        present(alert, animated: true,completion: nil)
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
